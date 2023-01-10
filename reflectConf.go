@@ -16,14 +16,9 @@ const (
 	TransformerTag = "transformer"
 	DefaultTag     = "default"
 
-	DirectTransformerConf                   = "direct"
-	DirectSliceTransformerConf              = "diSlice"
-	DirectSliceTransformerConfSemicolon     = "diSliceSemicolon"
-	DirectSliceTransformerConfColon         = "diSliceColon"
-	DirectSliceTransformerConfComma         = "diSliceComma"
-	DirectMapStructTransformerConf          = "diMapStruct"
-	DirectMapStructTransformerConfSemicolon = "diMapStructSemicolon"
-	DirectMapStructTransformerConfComma     = "diMapStructComma"
+	DirectTransformerConf          = "direct"
+	DirectSliceTransformerConf     = "diSlice"
+	DirectMapStructTransformerConf = "diMapStruct"
 )
 
 // FillConfByParamsMap 根据 reflect.StructTag、confMaps 为 obj 填充值

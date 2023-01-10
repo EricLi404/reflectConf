@@ -14,7 +14,7 @@ type TransformerFunc func(confStr string) (reflect.Value, error)
 // TransformerFunc 分为两种：
 //
 //	一是 通用直接转换器，根据 StructField.Kind 自动生成转换器，如 direct
-//	二是 根据 transformerName 明确定义的转换器，如 classMapSign
+//	二是 根据 transformerName 明确定义的转换器，如 timeDuration
 func getTransformerFunc(transformerName string, field reflect.StructField) (TransformerFunc, error) {
 	switch transformerName {
 	default:
@@ -30,47 +30,12 @@ func getTransformerFunc(transformerName string, field reflect.StructField) (Tran
 		}
 		return getDirectSliceTransformerFunc(field.Type, "|")
 
-	case DirectSliceTransformerConfSemicolon:
-		// 此处 []int{} 中的 int 为一个例子，实际上 切片 的 类型 是不确定的，所以 checkTypeMatch 时，应该 justCompareKind
-		if err := checkTypeMatch(field.Type, reflect.TypeOf([]int{}), true); err != nil {
-			return nil, err
-		}
-		return getDirectSliceTransformerFunc(field.Type, ";")
-
-	case DirectSliceTransformerConfColon:
-		// 此处 []int{} 中的 int 为一个例子，实际上 切片 的 类型 是不确定的，所以 checkTypeMatch 时，应该 justCompareKind
-		if err := checkTypeMatch(field.Type, reflect.TypeOf([]int{}), true); err != nil {
-			return nil, err
-		}
-		return getDirectSliceTransformerFunc(field.Type, ":")
-
-	case DirectSliceTransformerConfComma:
-		// 此处 []int{} 中的 int 为一个例子，实际上 切片 的 类型 是不确定的，所以 checkTypeMatch 时，应该 justCompareKind
-		if err := checkTypeMatch(field.Type, reflect.TypeOf([]int{}), true); err != nil {
-			return nil, err
-		}
-		return getDirectSliceTransformerFunc(field.Type, ",")
-
 	case DirectMapStructTransformerConf:
 		// 此处 map[int]struct{} 中的 int 为一个例子，实际上 map 的 key 是不确定的，所以 checkTypeMatch 时，应该 justCompareKind
 		if err := checkTypeMatch(field.Type, reflect.TypeOf(map[int]struct{}{}), true); err != nil {
 			return nil, err
 		}
 		return getDirectMapStructTransformerFunc(field.Type, "|")
-
-	case DirectMapStructTransformerConfSemicolon:
-		// 此处 map[int]struct{} 中的 int 为一个例子，实际上 map 的 key 是不确定的，所以 checkTypeMatch 时，应该 justCompareKind
-		if err := checkTypeMatch(field.Type, reflect.TypeOf(map[int]struct{}{}), true); err != nil {
-			return nil, err
-		}
-		return getDirectMapStructTransformerFunc(field.Type, ";")
-
-	case DirectMapStructTransformerConfComma:
-		// 此处 map[int]struct{} 中的 int 为一个例子，实际上 map 的 key 是不确定的，所以 checkTypeMatch 时，应该 justCompareKind
-		if err := checkTypeMatch(field.Type, reflect.TypeOf(map[int]struct{}{}), true); err != nil {
-			return nil, err
-		}
-		return getDirectMapStructTransformerFunc(field.Type, ",")
 
 	case "timeDuration":
 		if err := checkTypeMatch(field.Type, reflect.TypeOf(int64(0)), false); err != nil {
